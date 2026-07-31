@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Questions: anyone can read (students need to see the quiz),
+    // but only the signed-in teacher account can write/edit them.
+    match /questions/{questionId} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.auth.token.email == "TEACHER_EMAIL_HERE";
+    }
+
+    // Sections (Parts): same rule as questions — public read, teacher-only write.
+    // This is what lets you add, reorder, rename, and toggle sections on/off.
+    match /sections/{sectionId} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.auth.token.email == "TEACHER_EMAIL_HERE";
+    }
+
+    // Answers: each student (anonymous auth) can only read/write
+    // their own document. The teacher can read all of them (for grading)
+    // but cannot silently edit a student's answers.
+    match /answers/{studentUid} {
+      allow read: if request.auth != null
+                  && (request.auth.uid == studentUid
+                      || request.auth.token.email == "TEACHER_EMAIL_HERE");
+      allow write: if request.auth != null
+                   && request.auth.uid == studentUid;
+    }
+  }
+}
