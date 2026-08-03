@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fundamentals of Accounting — Examination</title>
+<title>Fundamentals of Accounting — Prelim Questionnaire</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&family=Spectral:ital@1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -98,7 +98,7 @@
 <body>
 
 <div class="cover">
-  <p class="eyebrow">Prelim Examination</p>
+  <p class="eyebrow">Prelim Questionnaire</p>
   <h1>Fundamentals of Accounting</h1>
   <p class="sub">Covering the accounting equation, journals, ledgers, adjusting entries, and financial statements. Your answers save automatically.</p>
 </div>
@@ -115,13 +115,13 @@
 <div class="wrap" style="padding:0;" id="sections-wrap"></div>
 
 <footer class="end">— End of Questionnaire —</footer>
-<p class="teacher-link"><a href="teacher.html">Teacher? Manage questions here →</a></p>
 
 <div class="progress-footer">
   <span class="progress-label" id="progress-label">0 / 0 answered</span>
   <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
   <div class="footer-actions">
     <button id="btn-print" type="button">Print / Save PDF</button>
+    <button id="btn-download" type="button">Download Test Paper</button>
     <button id="btn-save-now" type="button">Save Now</button>
   </div>
 </div>
@@ -336,6 +336,59 @@ async function doSave(manual){
 document.addEventListener('input', scheduleSave);
 document.addEventListener('change', scheduleSave);
 document.getElementById('btn-print').addEventListener('click', () => window.print());
+
+document.getElementById('btn-download').addEventListener('click', () => {
+  readAnswersFromInputs();
+  const name = document.getElementById('s-name').value.trim() || 'Student';
+  const secField = document.getElementById('s-section').value.trim();
+  const date = document.getElementById('s-date').value;
+
+  const ROMAN = ['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+  let out = 'FUNDAMENTALS OF ACCOUNTING — TEST PAPER\n';
+  out += `Name: ${name}\n`;
+  if (secField) out += `Section: ${secField}\n`;
+  if (date) out += `Date: ${date}\n`;
+  out += '\n' + '='.repeat(60) + '\n';
+
+  let visibleIndex = 0;
+  sections.forEach(sec => {
+    const items = allQuestions.filter(q => q.type === sec.key);
+    if (sec.enabled === false || items.length === 0) return;
+    const roman = ROMAN[visibleIndex] || String(visibleIndex + 1);
+    visibleIndex++;
+    out += `\nPART ${roman} — ${sec.label.toUpperCase()}\n` + '-'.repeat(60) + '\n';
+    items.forEach((q, idx) => {
+      const raw = answers[String(q.num)];
+      let answerText = '(no answer)';
+      if (raw !== undefined && raw !== null && raw !== ''){
+        if (sec.inputType === 'mc'){
+          const ci = letters.indexOf(raw);
+          const choiceText = (ci >= 0 && q.choices && q.choices[ci]) ? q.choices[ci] : '';
+          answerText = raw + (choiceText ? ') ' + choiceText : '');
+        } else if (sec.inputType === 'tf'){
+          answerText = raw === 'true' ? 'True' : 'False';
+        } else {
+          answerText = raw;
+        }
+      }
+      out += `\n${idx + 1}. ${q.text}\n   Your answer: ${answerText}\n`;
+    });
+    out += '\n';
+  });
+  out += '='.repeat(60) + '\nGenerated from the Fundamentals of Accounting quiz page.\n';
+
+  const blob = new Blob([out], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${name.replace(/\s+/g,'_')}_accounting_test_paper.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('✓ Test paper downloaded — you can now attach and send it to your teacher.');
+});
+
 document.getElementById('btn-save-now').addEventListener('click', async () => {
   const btn = document.getElementById('btn-save-now');
   btn.disabled = true;
