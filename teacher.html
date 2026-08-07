@@ -206,6 +206,8 @@ const DEFAULT_SECTIONS = [
 
 const defaultMC = [["Which of the following is the basic accounting equation?", ["Assets = Liabilities \u2013 Equity","Assets = Liabilities + Owner's Equity","Liabilities = Assets + Equity","Equity = Assets + Liabilities"]],["Which financial statement shows the financial position of a business at a specific point in time?", ["Income Statement","Statement of Cash Flows","Balance Sheet (Statement of Financial Position)","Statement of Changes in Equity"]],["Which accounting principle requires that expenses be recorded in the same period as the revenues they help generate?", ["Cost Principle","Matching Principle","Revenue Recognition Principle","Full Disclosure Principle"]],["Under the double-entry system, every transaction affects at least:", ["One account","Two accounts","Three accounts","Four accounts"]],["Which of the following accounts normally has a debit balance?", ["Accounts Payable","Owner's Capital","Accounts Receivable","Unearned Revenue"]],["Which of the following accounts normally has a credit balance?", ["Cash","Salaries Expense","Sales Revenue","Prepaid Rent"]],["The book of original entry where transactions are first recorded is called the:", ["Ledger","Journal","Trial Balance","Worksheet"]],["Transferring journal entries to the ledger accounts is called:", ["Journalizing","Posting","Adjusting","Closing"]],["Which of the following is classified as a current asset?", ["Equipment","Land","Accounts Receivable","Building"]],["Which of the following is classified as a current liability?", ["Mortgage Payable (due in 10 years)","Accounts Payable","Bonds Payable (long-term)","Owner's Capital"]],["A list of all accounts and their balances at a given time, used to check if debits equal credits, is called a:", ["Balance Sheet","Adjusted Journal","Trial Balance","General Ledger"]],["Which accounting concept assumes the business will continue operating indefinitely?", ["Going Concern","Accrual Basis","Time Period Concept","Conservatism"]],["Under the accrual basis of accounting, revenue is recorded:", ["When cash is received","When it is earned, regardless of when cash is received","At the end of the fiscal year only","When the invoice is paid"]],["Which of the following is an example of a prepaid expense?", ["Salaries owed to employees","Rent paid in advance","Interest earned but not yet received","Accounts payable to suppliers"]],["Depreciation is best described as:", ["The market value decline of an asset","The systematic allocation of an asset's cost over its useful life","A cash outflow recorded every year","A liability account"]],["Which of the following is NOT one of the five major account classifications?", ["Assets","Liabilities","Equity","Journal"]],["The owner's claim on the assets of the business after all liabilities are settled is called:", ["Net Income","Owner's Equity","Gross Profit","Retained Assets"]],["Which financial statement reports revenues and expenses over a period of time?", ["Balance Sheet","Income Statement","Statement of Cash Flows","Notes to Financial Statements"]],["Closing entries are prepared to:", ["Correct errors in the ledger","Update prepaid and accrued accounts","Reset temporary accounts (revenue, expense, drawing) to zero for the next period","Record daily business transactions"]],["Which of the following best describes \"liquidity\"?", ["The profitability of a business","The ability of a business to meet its short-term obligations","The total assets owned by a business","The long-term growth potential of a business"]]];
 
+const defaultMCAnswers = ['b','c','b','b','c','c','b','b','c','b','c','a','b','b','b','d','b','b','c','b'];
+
 const defaultTF = [
   "The accounting equation states that Assets = Liabilities + Owner's Equity.",
   "Under the cash basis of accounting, revenue is recorded only when earned, regardless of when cash is received.",
@@ -218,8 +220,10 @@ const defaultTF = [
   "Closing entries are used to transfer the balances of temporary accounts to the Owner's Capital account.",
   "The matching principle requires that expenses be recorded in the same period as the revenues they helped generate."
 ];
+const defaultTFAnswers = ['true','false','false','true','false','false','true','false','true','true'];
 
 const defaultID = ["The accounting principle that requires assets to be recorded at their original purchase price.","The financial statement that shows cash inflows and outflows classified into operating, investing, and financing activities.","The process of recording business transactions in the journal.","An account used to track the owner's withdrawals of cash or other assets for personal use.","The accounting assumption that the life of a business can be divided into equal periods (e.g., monthly, quarterly, annually) for reporting purposes.","Revenue that has been earned but not yet received in cash or recorded.","The report prepared after adjusting entries to prove that debits still equal credits before financial statements are prepared.","The type of account that is increased by a credit and represents amounts owed to creditors.","The formal grouping of all accounts used by a business, often with account numbers, is called this.","The financial statement that summarizes the changes in the owner's capital account over a period, including net income and withdrawals."];
+const defaultIDAnswers = ["Cost Principle","Statement of Cash Flows","Journalizing","Drawing (Owner's Drawing)","Time Period Concept","Accrued Revenue","Adjusted Trial Balance","Accounts Payable","Chart of Accounts","Statement of Changes in Owner's Equity"];
 
 const defaultPS = [{"group":"A. Accounting Equation","text":"Assets = \u20b1250,000; Liabilities = \u20b190,000; Owner's Equity = ?"},{"text":"Assets = ?; Liabilities = \u20b175,000; Owner's Equity = \u20b1180,000"},{"text":"Assets = \u20b1420,000; Liabilities = ?; Owner's Equity = \u20b1310,000"},{"text":"Liabilities = \u20b165,000; Owner's Equity = \u20b1145,000; Assets = ?"},{"text":"At the start of the year, Assets = \u20b1300,000 and Liabilities = \u20b1120,000. During the year, assets increased by \u20b150,000 and liabilities decreased by \u20b110,000. Compute the ending Owner's Equity."},{"group":"B. Journal Entries","text":"The owner invested \u20b1200,000 cash into the business."},{"text":"Purchased office equipment worth \u20b160,000 on account."},{"text":"Rendered services to a client for \u20b135,000 cash."},{"text":"Paid \u20b115,000 for monthly rent."},{"text":"Paid \u20b160,000 to settle the account payable in item 37."},{"group":"C. T-Accounts and Trial Balance","intro":"Using the transactions for \"Dela Cruz Consulting\" for its first month: owner invested \u20b1150,000 cash; purchased supplies for \u20b120,000 cash; rendered services for \u20b180,000 on account; paid \u20b110,000 salaries expense; collected \u20b150,000 from the account receivable above.","text":"Post the transactions to T-accounts for Cash, Accounts Receivable, Supplies, Owner's Capital, Service Revenue, and Salaries Expense."},{"text":"Compute the ending balance of Cash."},{"text":"Prepare a Trial Balance as of the end of the month."},{"group":"D. Adjusting Entries","text":"On November 1, a company paid \u20b136,000 for a 12-month insurance policy and recorded it as Prepaid Insurance. Prepare the adjusting entry needed on December 31."},{"text":"A company's employees earned \u20b118,000 in salaries for the last week of December, to be paid in January. Prepare the adjusting entry needed on December 31."},{"text":"A company received \u20b190,000 in advance for services to be rendered over 6 months, recorded as Unearned Revenue. By the end of the first month, one-sixth of the service has been performed. Prepare the adjusting entry."},{"text":"Equipment costing \u20b1120,000 has an estimated useful life of 10 years with no salvage value. Compute and record the annual depreciation expense using the straight-line method."},{"group":"E. Financial Statement Preparation","intro":"Using the following adjusted account balances of \"Santos Trading\" for the year ended December 31: Service Revenue \u20b1500,000; Salaries Expense \u20b1180,000; Rent Expense \u20b160,000; Utilities Expense \u20b125,000; Owner's Capital (beginning) \u20b1300,000; Owner's Drawing \u20b140,000.","text":"Prepare the Income Statement and compute Net Income."},{"text":"Prepare the Statement of Changes in Owner's Equity."},{"text":"If total assets at year-end are \u20b1550,000, compute total liabilities using the accounting equation and the ending Owner's Equity from item 49."}];
 
@@ -278,15 +282,15 @@ document.getElementById('btn-seed').addEventListener('click', async () => {
     const batch = db.batch();
     defaultMC.forEach((q, i) => {
       const num = i + 1;
-      batch.set(db.collection('questions').doc(String(num)), { num, type:'mc', text:q[0], choices:q[1] });
+      batch.set(db.collection('questions').doc(String(num)), { num, type:'mc', text:q[0], choices:q[1], correctAnswer: defaultMCAnswers[i] || '' });
     });
     defaultTF.forEach((q, i) => {
       const num = 21 + i;
-      batch.set(db.collection('questions').doc(String(num)), { num, type:'tf', text:q });
+      batch.set(db.collection('questions').doc(String(num)), { num, type:'tf', text:q, correctAnswer: defaultTFAnswers[i] || '' });
     });
     defaultID.forEach((q, i) => {
       const num = 31 + i;
-      batch.set(db.collection('questions').doc(String(num)), { num, type:'id', text:q });
+      batch.set(db.collection('questions').doc(String(num)), { num, type:'id', text:q, correctAnswer: defaultIDAnswers[i] || '' });
     });
     defaultPS.forEach((q, i) => {
       const num = 41 + i;
@@ -296,7 +300,7 @@ document.getElementById('btn-seed').addEventListener('click', async () => {
       batch.set(db.collection('questions').doc(String(num)), doc);
     });
     await batch.commit();
-    setEl('seed-status', 'Done — 60 questions and 4 sections uploaded.', 'ok');
+    setEl('seed-status', 'Done — 60 questions, 4 sections, and an answer key uploaded.', 'ok');
   } catch (e){
     setEl('seed-status', 'Failed: ' + e.message, 'err');
   }
@@ -541,6 +545,23 @@ function makeRow(sec, q){
   if (sec.inputType === 'mc'){
     const choices = q.choices && q.choices.length ? q.choices : ['','','',''];
     inner += choices.map((c,ci) => `<div class="choice-edit"><span>${letters[ci]})</span><input type="text" class="f-choice" data-ci="${ci}" value="${(c||'').replace(/"/g,'&quot;')}"></div>`).join('');
+    inner += `<label>Correct answer</label>
+      <select class="f-correct">
+        <option value="">— not set (won't be auto-graded) —</option>
+        ${letters.map(l => `<option value="${l}" ${q.correctAnswer === l ? 'selected' : ''}>${l})</option>`).join('')}
+      </select>`;
+  } else if (sec.inputType === 'tf'){
+    inner += `<label>Correct answer</label>
+      <select class="f-correct">
+        <option value="">— not set (won't be auto-graded) —</option>
+        <option value="true" ${q.correctAnswer === 'true' ? 'selected' : ''}>True</option>
+        <option value="false" ${q.correctAnswer === 'false' ? 'selected' : ''}>False</option>
+      </select>`;
+  } else if (sec.inputType === 'text'){
+    inner += `<label>Correct answer (exact match, case-insensitive — leave blank to skip auto-grading)</label>
+      <input type="text" class="f-correct" value="${(q.correctAnswer||'').replace(/"/g,'&quot;')}">`;
+  } else {
+    inner += `<p class="hint" style="margin:6px 0 0;">Long-answer items are graded manually — there's no single correct answer to check against.</p>`;
   }
   row.innerHTML = inner;
   row.querySelector('.btn-del-row').addEventListener('click', () => row.remove());
@@ -617,8 +638,10 @@ document.getElementById('btn-save-questions').addEventListener('click', async ()
         }
         const groupEl = row.querySelector('.f-group');
         const introEl = row.querySelector('.f-intro');
+        const correctEl = row.querySelector('.f-correct');
         if (groupEl && groupEl.value.trim()) doc.group = groupEl.value.trim();
         if (introEl && introEl.value.trim()) doc.intro = introEl.value.trim();
+        if (correctEl && correctEl.value.trim()) doc.correctAnswer = correctEl.value.trim();
         writeBatch.set(db.collection('questions').doc(String(num)), doc);
         num++;
       });
@@ -640,10 +663,14 @@ let loadedAnswers = [];
 document.getElementById('btn-load-answers').addEventListener('click', async () => {
   setEl('answers-status', 'Loading…');
   try {
+    if (!loadedQuestions.length){
+      const qSnap = await db.collection('questions').orderBy('num').get();
+      loadedQuestions = qSnap.docs.map(d => d.data());
+    }
     const snap = await db.collection('answers').get();
     loadedAnswers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     renderAnswersTable();
-    setEl('answers-status', loadedAnswers.length + ' submissions loaded.', 'ok');
+    setEl('answers-status', loadedAnswers.length + ' submissions loaded and auto-graded.', 'ok');
   } catch (e){
     setEl('answers-status', 'Failed: ' + e.message, 'err');
   }
@@ -655,17 +682,54 @@ function questionLookup(){
   return map;
 }
 
+function isAnswerCorrect(q, studentRaw){
+  if (q.correctAnswer === undefined || q.correctAnswer === null || q.correctAnswer === '') return null; // ungraded
+  if (studentRaw === undefined || studentRaw === null || studentRaw === '') return false;
+  if (q.type === 'mc' || q.type === 'tf'){
+    return String(studentRaw).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase();
+  }
+  if (q.type === 'id'){
+    return String(studentRaw).trim().toLowerCase() === String(q.correctAnswer).trim().toLowerCase();
+  }
+  return null; // ps or anything else: not auto-gradable
+}
+
+function gradeSubmission(a){
+  const qmap = questionLookup();
+  const responses = a.responses || {};
+  let correct = 0, incorrect = 0, ungraded = 0, manual = 0;
+  Object.keys(responses).forEach(n => {
+    const q = qmap[parseInt(n, 10)];
+    if (!q) return;
+    if (q.type === 'ps'){ manual++; return; }
+    const result = isAnswerCorrect(q, responses[n]);
+    if (result === true) correct++;
+    else if (result === false) incorrect++;
+    else ungraded++;
+  });
+  return { correct, incorrect, ungraded, manual, total: correct + incorrect + ungraded };
+}
+
 function renderAnswersTable(){
   const wrap = document.getElementById('answers-table');
   if (loadedAnswers.length === 0){ wrap.innerHTML = '<p class="hint">No submissions yet.</p>'; return; }
   let maxQ = loadedQuestions.length ? Math.max(...loadedQuestions.map(q => q.num)) : 50;
-  let html = '<table><tr><th></th><th>Name</th><th>Section</th><th>Date</th><th>Items answered</th></tr>';
+  const canGrade = loadedQuestions.length > 0;
+  let html = `<table><tr><th></th><th>Name</th><th>Section</th><th>Date</th><th>Items answered</th><th>${canGrade ? 'Score (auto-graded)' : 'Score'}</th></tr>`;
   loadedAnswers.forEach((a, idx) => {
     const count = a.responses ? Object.keys(a.responses).length : 0;
+    let scoreCell = '<span class="hint">Load Questions to grade</span>';
+    if (canGrade){
+      const g = gradeSubmission(a);
+      const parts = [];
+      if (g.total > 0) parts.push(`${g.correct}/${g.total} correct`);
+      if (g.manual > 0) parts.push(`${g.manual} manual review`);
+      scoreCell = parts.length ? parts.join(' · ') : '<span class="hint">nothing gradable</span>';
+    }
     html += `<tr class="ans-row" data-idx="${idx}" style="cursor:pointer;">
-      <td>▸</td><td>${a.name||'(no name)'}</td><td>${a.section||''}</td><td>${a.date||''}</td><td>${count} / ${maxQ}</td>
+      <td>▸</td><td>${a.name||'(no name)'}</td><td>${a.section||''}</td><td>${a.date||''}</td><td>${count} / ${maxQ}</td><td>${scoreCell}</td>
     </tr>
-    <tr class="ans-detail hidden" data-idx="${idx}"><td colspan="5"></td></tr>`;
+    <tr class="ans-detail hidden" data-idx="${idx}"><td colspan="6"></td></tr>`;
   });
   html += '</table>';
   wrap.innerHTML = html;
@@ -691,15 +755,34 @@ function renderStudentDetail(a){
   const responses = a.responses || {};
   const nums = Object.keys(responses).map(n => parseInt(n,10)).sort((x,y) => x-y);
   if (nums.length === 0) return '<p class="hint">No answers yet.</p>';
+  const canGrade = loadedQuestions.length > 0;
   let rows = nums.map(n => {
     const q = qmap[n];
     const label = q ? (q.text.length > 70 ? q.text.slice(0,70)+'…' : q.text) : ('Question ' + n);
-    return `<tr><td style="white-space:nowrap;">#${n}</td><td>${label}</td><td><strong>${responses[n]}</strong></td></tr>`;
+    let mark = '';
+    if (canGrade && q){
+      const result = isAnswerCorrect(q, responses[n]);
+      if (q.type === 'ps') mark = '<span style="color:var(--ink-soft);">manual review</span>';
+      else if (result === true) mark = '<span style="color:var(--green); font-weight:600;">✓ correct</span>';
+      else if (result === false) mark = `<span style="color:var(--err); font-weight:600;">✗ wrong — correct: ${escapeAnswer(q.correctAnswer, q)}</span>`;
+      else mark = '<span style="color:var(--ink-soft);">no answer key set</span>';
+    }
+    return `<tr><td style="white-space:nowrap;">#${n}</td><td>${label}</td><td><strong>${responses[n]}</strong></td><td>${mark}</td></tr>`;
   }).join('');
   if (!loadedQuestions.length){
-    rows = '<tr><td colspan="3" class="hint" style="padding-bottom:8px;">Tip: click "Load Questions" above to see question text alongside each answer.</td></tr>' + rows;
+    rows = '<tr><td colspan="4" class="hint" style="padding-bottom:8px;">Tip: click "Load Questions" above to see question text, grading, and correct answers.</td></tr>' + rows;
   }
-  return `<table style="margin-top:6px;"><tr><th>#</th><th>Question</th><th>Answer</th></tr>${rows}</table>`;
+  return `<table style="margin-top:6px;"><tr><th>#</th><th>Question</th><th>Answer</th><th>Result</th></tr>${rows}</table>`;
+}
+
+function escapeAnswer(val, q){
+  if (q.type === 'tf') return val === 'true' ? 'True' : 'False';
+  if (q.type === 'mc'){
+    const ci = letters.indexOf(val);
+    const choiceText = (ci >= 0 && q.choices && q.choices[ci]) ? q.choices[ci] : '';
+    return val + (choiceText ? ') ' + choiceText : '');
+  }
+  return val;
 }
 
 document.getElementById('btn-export-csv').addEventListener('click', () => {
@@ -709,11 +792,17 @@ document.getElementById('btn-export-csv').addEventListener('click', () => {
     if (a.responses) Object.keys(a.responses).forEach(k => { const n = parseInt(k, 10); if (n > maxQ) maxQ = n; });
   });
   if (maxQ === 0) maxQ = 50;
+  const canGrade = loadedQuestions.length > 0;
   const headers = ['Name','Section','Date'];
+  if (canGrade) headers.push('Correct (auto)', 'Incorrect (auto)', 'Needs Manual Review');
   for (let i = 1; i <= maxQ; i++) headers.push('Q' + i);
   const rows = [headers.join(',')];
   loadedAnswers.forEach(a => {
     const row = [a.name||'', a.section||'', a.date||''];
+    if (canGrade){
+      const g = gradeSubmission(a);
+      row.push(g.correct, g.incorrect, g.manual);
+    }
     for (let i = 1; i <= maxQ; i++){
       const v = (a.responses && a.responses[String(i)]) || '';
       row.push('"' + String(v).replace(/"/g,'""') + '"');
