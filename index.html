@@ -120,8 +120,8 @@
   <span class="progress-label" id="progress-label">0 / 0 answered</span>
   <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
   <div class="footer-actions">
-    <button id="btn-print" type="button">Print / Save PDF</button>
     <button id="btn-download" type="button">Download Test Paper</button>
+    <button id="btn-export-excel" type="button">Export to Excel</button>
     <button id="btn-save-now" type="button">Save Now</button>
   </div>
 </div>
@@ -335,58 +335,149 @@ async function doSave(manual){
 
 document.addEventListener('input', scheduleSave);
 document.addEventListener('change', scheduleSave);
-document.getElementById('btn-print').addEventListener('click', () => window.print());
 
-document.getElementById('btn-download').addEventListener('click', () => {
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function getAnswerText(sec, q){
+  const raw = answers[String(q.num)];
+  if (raw === undefined || raw === null || raw === '') return '(no answer)';
+  if (sec.inputType === 'mc'){
+    const ci = letters.indexOf(raw);
+    const choiceText = (ci >= 0 && q.choices && q.choices[ci]) ? q.choices[ci] : '';
+    return raw + (choiceText ? ') ' + choiceText : '');
+  }
+  if (sec.inputType === 'tf') return raw === 'true' ? 'True' : 'False';
+  return raw;
+}
+
+function buildTestPaperData(){
   readAnswersFromInputs();
   const name = document.getElementById('s-name').value.trim() || 'Student';
   const secField = document.getElementById('s-section').value.trim();
   const date = document.getElementById('s-date').value;
-
   const ROMAN = ['I','II','III','IV','V','VI','VII','VIII','IX','X'];
-  let out = 'FUNDAMENTALS OF ACCOUNTING — TEST PAPER\n';
-  out += `Name: ${name}\n`;
-  if (secField) out += `Section: ${secField}\n`;
-  if (date) out += `Date: ${date}\n`;
-  out += '\n' + '='.repeat(60) + '\n';
 
+  const partsData = [];
   let visibleIndex = 0;
   sections.forEach(sec => {
     const items = allQuestions.filter(q => q.type === sec.key);
     if (sec.enabled === false || items.length === 0) return;
     const roman = ROMAN[visibleIndex] || String(visibleIndex + 1);
     visibleIndex++;
-    out += `\nPART ${roman} — ${sec.label.toUpperCase()}\n` + '-'.repeat(60) + '\n';
-    items.forEach((q, idx) => {
-      const raw = answers[String(q.num)];
-      let answerText = '(no answer)';
-      if (raw !== undefined && raw !== null && raw !== ''){
-        if (sec.inputType === 'mc'){
-          const ci = letters.indexOf(raw);
-          const choiceText = (ci >= 0 && q.choices && q.choices[ci]) ? q.choices[ci] : '';
-          answerText = raw + (choiceText ? ') ' + choiceText : '');
-        } else if (sec.inputType === 'tf'){
-          answerText = raw === 'true' ? 'True' : 'False';
-        } else {
-          answerText = raw;
-        }
-      }
-      out += `\n${idx + 1}. ${q.text}\n   Your answer: ${answerText}\n`;
+    partsData.push({
+      roman, label: sec.label,
+      items: items.map((q, idx) => ({ num: idx + 1, text: q.text, answer: getAnswerText(sec, q) }))
+    });
+  });
+
+  return { name, secField, date, partsData };
+}
+
+function buildTestPaperHTML(){
+  const { name, secField, date, partsData } = buildTestPaperData();
+  let body = `<h1 style="font-family:Calibri,Arial,sans-serif;">Fundamentals of Accounting — Test Paper</h1>`;
+  body += `<p style="font-family:Calibri,Arial,sans-serif; font-size:12pt;">`;
+  body += `<b>Name:</b> ${escapeHtml(name)}<br>`;
+  if (secField) body += `<b>Section:</b> ${escapeHtml(secField)}<br>`;
+  if (date) body += `<b>Date:</b> ${escapeHtml(date)}<br>`;
+  body += `</p><hr>`;
+
+  partsData.forEach(part => {
+    body += `<h2 style="font-family:Calibri,Arial,sans-serif; color:#1F3D2E;">Part ${part.roman} — ${escapeHtml(part.label)}</h2>`;
+    part.items.forEach(item => {
+      body += `<p style="font-family:Calibri,Arial,sans-serif; font-size:11.5pt; margin-bottom:14px;">`;
+      body += `<b>${item.num}. ${escapeHtml(item.text)}</b><br>`;
+      body += `<span style="color:#1F3D2E;">Your answer: ${escapeHtml(item.answer)}</span></p>`;
+    });
+  });
+  body += `<hr><p style="font-family:Calibri,Arial,sans-serif; font-size:9pt; color:#777;">Generated from the Fundamentals of Accounting quiz page.</p>`;
+
+  return { body, name, filename: `${name.replace(/\s+/g,'_')}_accounting_test_paper.doc` };
+}
+
+function buildTestPaperPlainText(){
+  const { name, secField, date, partsData } = buildTestPaperData();
+  let out = 'FUNDAMENTALS OF ACCOUNTING — TEST PAPER\n';
+  out += `Name: ${name}\n`;
+  if (secField) out += `Section: ${secField}\n`;
+  if (date) out += `Date: ${date}\n`;
+  out += '\n' + '='.repeat(60) + '\n';
+  partsData.forEach(part => {
+    out += `\nPART ${part.roman} — ${part.label.toUpperCase()}\n` + '-'.repeat(60) + '\n';
+    part.items.forEach(item => {
+      out += `\n${item.num}. ${item.text}\n   Your answer: ${item.answer}\n`;
     });
     out += '\n';
   });
   out += '='.repeat(60) + '\nGenerated from the Fundamentals of Accounting quiz page.\n';
+  return { text: out, name };
+}
 
-  const blob = new Blob([out], { type: 'text/plain' });
+function downloadWordFile(bodyHtml, filename){
+  const fullHtml = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head><meta charset="utf-8"><title>Test Paper</title></head>
+<body>${bodyHtml}</body></html>`;
+  const blob = new Blob(['\ufeff', fullHtml], { type: 'application/msword' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${name.replace(/\s+/g,'_')}_accounting_test_paper.txt`;
+  a.download = filename;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  showToast('✓ Test paper downloaded — you can now attach and send it to your teacher.');
+}
+
+document.getElementById('btn-download').addEventListener('click', () => {
+  const { body, filename } = buildTestPaperHTML();
+  downloadWordFile(body, filename);
+  showToast('✓ Test paper downloaded as a Word document — you can open it in Word or upload it to Google Drive to convert to Google Docs.');
+});
+
+function buildTestPaperExcelTable(){
+  const { name, secField, date, partsData } = buildTestPaperData();
+  let rows = `<tr><td colspan="3" style="font-weight:bold; font-size:14pt;">Fundamentals of Accounting — Test Paper</td></tr>`;
+  rows += `<tr><td style="font-weight:bold;">Name</td><td colspan="2">${escapeHtml(name)}</td></tr>`;
+  if (secField) rows += `<tr><td style="font-weight:bold;">Section</td><td colspan="2">${escapeHtml(secField)}</td></tr>`;
+  if (date) rows += `<tr><td style="font-weight:bold;">Date</td><td colspan="2">${escapeHtml(date)}</td></tr>`;
+  rows += `<tr><td></td><td></td><td></td></tr>`;
+
+  partsData.forEach(part => {
+    rows += `<tr><td colspan="3" style="font-weight:bold; background:#E7DFC9;">Part ${part.roman} — ${escapeHtml(part.label)}</td></tr>`;
+    rows += `<tr><td style="font-weight:bold;">#</td><td style="font-weight:bold;">Question</td><td style="font-weight:bold;">Answer</td></tr>`;
+    part.items.forEach(item => {
+      rows += `<tr><td>${item.num}</td><td>${escapeHtml(item.text)}</td><td>${escapeHtml(item.answer)}</td></tr>`;
+    });
+    rows += `<tr><td></td><td></td><td></td></tr>`;
+  });
+
+  return { table: `<table border="1" cellspacing="0" cellpadding="4">${rows}</table>`, name, filename: `${name.replace(/\s+/g,'_')}_accounting_test_paper.xls` };
+}
+
+function downloadExcelFile(tableHtml, filename){
+  const fullHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="utf-8"></head>
+<body>${tableHtml}</body></html>`;
+  const blob = new Blob(['\ufeff', fullHtml], { type: 'application/vnd.ms-excel' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById('btn-export-excel').addEventListener('click', () => {
+  const { table, filename } = buildTestPaperExcelTable();
+  downloadExcelFile(table, filename);
+  showToast('✓ Test paper exported as an Excel file.');
 });
 
 document.getElementById('btn-save-now').addEventListener('click', async () => {
